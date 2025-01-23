@@ -1,11 +1,21 @@
 use clap::Parser;
+use ethers::providers::{Http, Provider};
 use ethers::{
+    providers::Middleware,
     signers::{LocalWallet, Signer},
     utils::hex,
 };
+
+use ethers::types::Address as EthAddress;
 use solana_sdk::signature::Signer as SolSigner;
 use solana_sdk::{bs58, signature::Keypair};
-use std::{fs::File, path::PathBuf};
+use solana_sdk::client::Client as SOLClient;
+use std::{
+    fs::File,
+    io::{BufRead, BufReader},
+    path::PathBuf,
+};
+
 
 #[derive(Parser, Debug)]
 #[command(name = "address-gen")]
@@ -27,6 +37,38 @@ struct Cli {
     #[arg(long)]
     version: bool,
 }
+
+async fn calculate_eth_total_balance(
+    file_path: &str,
+    provider_url: &str,
+) -> Result<f64, Box<dyn std::error::Error>> {
+    let provider = Provider::<Http>::try_from(provider_url)?;
+    let file = File::open(file_path)?;
+    let reader = BufReader::new(file);
+
+    let mut total_balance = 0.0;
+
+    for line in reader.lines().skip(1) {
+        let line = line?;
+        let parts: Vec<&str> = line.split(",").collect();
+        if parts.len() >= 3 {
+            let address = parts[2];
+            let eth_address = address.parse::<EthAddress>()?;
+            let balance = provider.get_balance(eth_address, None).await?;
+            let balance_eth = ethers::utils::format_units(balance, "ether")?;
+            total_balance += balance_eth.parse::<f64>()?;
+        }
+    }
+    Ok(total_balance)
+}
+
+// async fn calculate_sol_total_balance(file_path: &str,rpc_url: &str) -> Result<f64> {
+//     // let client = SOLClient::tpu_addr(&self).getr?
+//     let file = File::open(file_path)?;
+//     let reader = BufReader::new(file);
+    
+//     let mut total_balance = 0.0;
+// }
 
 fn generate_sol_addresses(count: usize) -> Vec<(String, String)> {
     (0..count)
