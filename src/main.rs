@@ -9,7 +9,6 @@ use ethers::{
 use ethers::types::Address as EthAddress;
 use solana_sdk::signature::Signer as SolSigner;
 use solana_sdk::{bs58, signature::Keypair};
-use solana_sdk::client::Client as SOLClient;
 use std::{
     fs::File,
     io::{BufRead, BufReader},
@@ -62,13 +61,6 @@ async fn calculate_eth_total_balance(
     Ok(total_balance)
 }
 
-// async fn calculate_sol_total_balance(file_path: &str,rpc_url: &str) -> Result<f64> {
-//     // let client = SOLClient::tpu_addr(&self).getr?
-//     let file = File::open(file_path)?;
-//     let reader = BufReader::new(file);
-    
-//     let mut total_balance = 0.0;
-// }
 
 fn generate_sol_addresses(count: usize) -> Vec<(String, String)> {
     (0..count)
