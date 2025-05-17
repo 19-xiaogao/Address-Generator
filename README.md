@@ -1,12 +1,12 @@
 # Address Generator
 
-A command-line tool for generating cryptocurrency addresses and BIP-39 mnemonic phrases. Supports Ethereum Virtual Machine (EVM) addresses, Solana addresses, and 24-word mnemonic phrases (256-bit entropy).
+A command-line tool for generating cryptocurrency addresses and BIP-39 mnemonic phrases. Supports Ethereum Virtual Machine (EVM) addresses, Solana addresses, and 12-word mnemonic phrases (256-bit entropy).
 
 ## Features
 
 - Generate EVM-compatible addresses with public and private keys.
 - Generate Solana addresses with public and private keys.
-- Generate BIP-39 compliant 24-word mnemonic phrases in English.
+- Generate BIP-39 compliant 12-word mnemonic phrases in English.
 - Save generated data to CSV files or display in the console.
 - Configurable via command-line arguments for batch generation.
 
