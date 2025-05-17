@@ -10,3 +10,4 @@ rand = "0.8.5"
 csv = "1.2.1"
 anyhow = "1.0.75"
 ethers = { version = "2.0.14", features = ["rustls"] }
+bip39 = "2.0"
